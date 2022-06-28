@@ -15,13 +15,13 @@
         <EntityTypeShape EntityType="MarathonModel.Registration" Width="1.5" PointX="8.25" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.RegistrationEvent" Width="1.5" PointX="10.5" PointY="9.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.RegistrationStatus" Width="1.5" PointX="6" PointY="19.125" IsExpanded="true" />
-        <EntityTypeShape EntityType="MarathonModel.Role" Width="1.5" PointX="1.5" PointY="15.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="MarathonModel.Role" Width="1.5" PointX="1" PointY="13.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.Runner" Width="1.5" PointX="3" PointY="7.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.Sponsorship" Width="1.5" PointX="10.5" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.Staff" Width="1.5" PointX="6" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.Timesheet" Width="1.5" PointX="8.25" PointY="12.875" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.User" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
-        <EntityTypeShape EntityType="MarathonModel.user3" Width="1.5" PointX="3" PointY="11.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="MarathonModel.user3" Width="1.5" PointX="3" PointY="12.625" IsExpanded="true" />
         <EntityTypeShape EntityType="MarathonModel.Volunteer" Width="1.5" PointX="6" PointY="7.75" IsExpanded="true" />
         <AssociationConnector Association="MarathonModel.FK_Registration_Charity" ManuallyRouted="false" />
         <AssociationConnector Association="MarathonModel.FK_Marathon_Country" ManuallyRouted="false" />
@@ -43,6 +43,15 @@
         <AssociationConnector Association="MarathonModel.FK_Staff_User" ManuallyRouted="false" />
         <AssociationConnector Association="MarathonModel.FK_Timesheet_Staff" ManuallyRouted="false" />
         <AssociationConnector Association="MarathonModel.FK_Volunteer_User" />
+        <EntityTypeShape EntityType="MarathonModel.Review" Width="1.5" PointX="11.25" PointY="12.875" />
+        <AssociationConnector Association="MarathonModel.FK_Review_user3" />
+        <AssociationConnector Association="MarathonModel.FK_Review_Volunteer" />
+        <EntityTypeShape EntityType="MarathonModel.Sponsor" Width="1.5" PointX="8.25" PointY="3.375" />
+        <AssociationConnector Association="MarathonModel.FK_Sponsor_Charity" />
+        <AssociationConnector Association="MarathonModel.FK_Sponsor_Runner" />
+        <EntityTypeShape EntityType="MarathonModel.RunnerMarathon" Width="2.625" PointX="9.75" PointY="16.375" />
+        <AssociationConnector Association="MarathonModel.FK_RunnerMarathon_Runner" />
+        <AssociationConnector Association="MarathonModel.FK_RunnerMarathon_user3" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

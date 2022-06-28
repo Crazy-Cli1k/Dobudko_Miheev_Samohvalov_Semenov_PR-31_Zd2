@@ -64,9 +64,10 @@ namespace MaraphonSkills.Pages
         {
             if (CapchaTextBox.Text == CapchaTextBlock.Text)
             {
-                Core.User currentUser = context.User.Where(x => x.Email == EmailTextBox.Text && x.Password == PasswordTextBox.Password).First();
-                if (currentUser != null)
+                int currentUserExisting = context.User.Where(x => x.Email == EmailTextBox.Text && x.Password == PasswordTextBox.Password).Count();
+                if (currentUserExisting != 0)
                 {
+                    var currentUser = context.User.Where(x => x.Email == EmailTextBox.Text && x.Password == PasswordTextBox.Password).First();
                     WrongTypes = 0;
                     Properties.Settings.Default.currentUserEmail = currentUser.Email;
                     Properties.Settings.Default.Save();
@@ -75,8 +76,14 @@ namespace MaraphonSkills.Pages
                         case 1:
                             this.NavigationService.Navigate(new RunnerMenuPage());
                             break;
+                        case 2:
+                            this.NavigationService.Navigate(new CoordinatorMenuPage());
+                            break;
                         case 3:
                             this.NavigationService.Navigate(new ViewerMenuPage());
+                            break;
+                        case 4:
+                            this.NavigationService.Navigate(new AdminMenuPage());
                             break;
                     }
                 }
@@ -144,8 +151,10 @@ namespace MaraphonSkills.Pages
             for (int i = 0; i < 5; ++i)
                 textCapcha += ALF[rnd.Next(ALF.Length)];
             CapchaTextBlock.Text = textCapcha;
-            RotateTransform capchaRotate = new RotateTransform();
-            capchaRotate.Angle = rnd.Next(20)-10;
+            RotateTransform capchaRotate = new RotateTransform
+            {
+                Angle = rnd.Next(20) - 10
+            };
             CapchaTextBlock.RenderTransform = capchaRotate;
         }
 
@@ -154,11 +163,50 @@ namespace MaraphonSkills.Pages
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void DebugButton_Click(object sender, RoutedEventArgs e)
+        private void DebugRunnerButton_Click(object sender, RoutedEventArgs e)
         {
             CapchaTextBox.Text = CapchaTextBlock.Text;
             EmailTextBox.Text = "asd";
             PasswordTextBox.Password = "as";
+        }
+
+        /// <summary>
+        /// Кнопка для разработчика чтобы войти под координатором
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DebugCoordinatorButton_Click(object sender, RoutedEventArgs e)
+        {
+            CapchaTextBox.Text = CapchaTextBlock.Text;
+            EmailTextBox.Text = "coorginator@ya.ru";
+            PasswordTextBox.Password = "Pass";
+
+        }
+
+        /// <summary>
+        /// Кнопка для разработчика чтобы войти под зрителем
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DebugViewerButton_Click(object sender, RoutedEventArgs e)
+        {
+            CapchaTextBox.Text = CapchaTextBlock.Text;
+            EmailTextBox.Text = "a";
+            PasswordTextBox.Password = "a";
+
+        }
+
+        /// <summary>
+        /// Кнопка для разработчика чтобы войти под администратором
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void DebugAdminButton_Click(object sender, RoutedEventArgs e)
+        {
+            CapchaTextBox.Text = CapchaTextBlock.Text;
+            EmailTextBox.Text = "admin@ya.ru";
+            PasswordTextBox.Password = "SdfgSdfg098";
+
         }
     }
 }

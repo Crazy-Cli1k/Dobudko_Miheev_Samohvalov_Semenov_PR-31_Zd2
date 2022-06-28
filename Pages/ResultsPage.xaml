@@ -1,0 +1,25 @@
+﻿<Page x:Class="MaraphonSkills.Pages.ResultsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MaraphonSkills.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="ResultsPage">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <DataGrid ItemsSource="{Binding }" AutoGenerateColumns="False">
+            <DataGrid.Columns>
+                <DataGridTextColumn FontSize="14" Header="Марафон" Binding="{Binding user3.MarathonName}"/>
+                <DataGridTextColumn FontSize="14" Header="Место" Binding="{Binding Position}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Border Grid.Row="1" Style="{StaticResource SmallButtonBorder}" Width="200" x:Name="CancelButton" MouseLeftButtonDown="CancelButton_MouseLeftButtonDown">
+            <TextBlock Text="Назад" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+        </Border>
+    </Grid>
+</Page>

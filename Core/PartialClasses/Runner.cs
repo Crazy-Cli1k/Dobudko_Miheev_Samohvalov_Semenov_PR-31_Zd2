@@ -27,5 +27,9 @@ namespace MaraphonSkills.Core
             {
                 return (DateTime.Now.Year - DateOfBirth.Year).ToString()+" Лет";
             } }
+
+        public string RunnerFIO { get {
+                return String.Format("{0} {1}", User.LastName, User.FirstName);
+            } }
     }
 }

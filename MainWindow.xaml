@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MaraphonSkills"
         mc:Ignorable="d"
-        Title="{Binding ElementName=MainFrame, Path=Content.Title, StringFormat=Marathon Skills - {0}}" MinHeight="250" MaxHeight="1280" Height="500" MinWidth="400" MaxWidth="1920" Width="800" Loaded="Window_Loaded" Closed="Window_Closed">
+        Title="{Binding ElementName=MainFrame, Path=Content.Title, StringFormat=Marathon Skills - {0}}" MinHeight="450" MaxHeight="1280" Height="600" MinWidth="600" MaxWidth="1920" Width="800" Loaded="Window_Loaded" Closed="Window_Closed">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>

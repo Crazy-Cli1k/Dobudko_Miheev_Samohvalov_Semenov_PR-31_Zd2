@@ -27,7 +27,7 @@ namespace MaraphonSkills.Pages
 
         private void MarathonSkillsInfoButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            this.NavigationService.Navigate(new MarathonSkillsPage());
         }
 
         private void HowLongInfoButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -37,7 +37,7 @@ namespace MaraphonSkills.Pages
 
         private void PreviousResultsButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            this.NavigationService.Navigate(new AllResultsPage());
         }
 
         private void CharityButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
@@ -47,7 +47,7 @@ namespace MaraphonSkills.Pages
 
         private void CalculatorButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
-
+            this.NavigationService.Navigate(new BMICalculatorPage());
         }
     }
 }

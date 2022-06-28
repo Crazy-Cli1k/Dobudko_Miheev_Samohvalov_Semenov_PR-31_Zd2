@@ -11,10 +11,6 @@
         <Style TargetType="TextBox">
             <Setter Property="Width" Value="150"/>
         </Style>
-        
-        <Style TargetType="PasswordBox">
-            <Setter Property="Width" Value="150"/>
-        </Style>
 
         <Style TargetType="ComboBox">
             <Setter Property="Width" Value="100"/>
@@ -24,7 +20,10 @@
             <Setter Property="Margin" Value="5"/>
         </Style>
         
-        
+         
+        <Style TargetType="PasswordBox">
+            <Setter Property="Width" Value="150"/>
+        </Style>
     </Page.Resources>
     <Grid>
         <StackPanel>

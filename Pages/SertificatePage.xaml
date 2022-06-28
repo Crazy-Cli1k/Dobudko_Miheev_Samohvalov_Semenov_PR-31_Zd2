@@ -1,0 +1,46 @@
+﻿<Page x:Class="MaraphonSkills.Pages.SertificatePage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MaraphonSkills.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="SertificatePage" DataContext="{Binding RelativeSource={RelativeSource Mode=Self}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.7*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Run Text="Race Event:"/>
+            <Run Text="{Binding Runner.user3.MarathonName}"/>
+        </TextBlock>
+        <Image Grid.Row="1" Width="250"/>
+        <TextBlock Grid.Row="1" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Run Text="Поздравляем"/>
+            <Run Text="{Binding Runner.Runner.User.FirstName}"/>
+            <Run Text="{Binding Runner.Runner.User.LastName}"/>
+            <Run Text="с участием в"/>
+            <Run Text="{Binding Runner.user3.MarathonName}"/>
+            <Run Text="марафоне."/>
+            <Run Text="Ваши результаты: время"/>
+            <Run Text="{Binding Runner.Time}"/>
+            <Run Text="и занятое место"/>
+            <Run Text="{Binding Runner.Position}"/>
+        </TextBlock>
+
+        <TextBlock FontSize="35" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Top">
+            <Run Text="Сертификат участника"/>
+        </TextBlock>
+        <TextBlock Text="в" FontSize="17" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+        <TextBlock Text="Marathon Skills 2016" FontSize="30" Grid.Row="3" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding Runner.user3.CityName,StringFormat={}Город проведения марафона: {0}}" Grid.Row="4" HorizontalAlignment="Center"/>
+        <TextBlock Text="Вы также заработали$1,300&#x0a;для вашей благотворительной организации!" Grid.Row="5" FontSize="17" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+    </Grid>
+</Page>

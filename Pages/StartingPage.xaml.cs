@@ -22,7 +22,7 @@ namespace MaraphonSkills.Pages
     /// </summary>
     public partial class StartingPage : Page
     {
-        public DateTime startTime = DateTime.Parse("2021-11-21 12:00");
+        public DateTime startTime = DateTime.Parse("2022-11-21 12:00");
 
         public StartingPage()
         {

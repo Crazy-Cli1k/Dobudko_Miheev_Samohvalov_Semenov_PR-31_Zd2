@@ -1,0 +1,75 @@
+﻿<Page x:Class="MaraphonSkills.Pages.AllResultsPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:MaraphonSkills.Pages"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="AllResultsPage">
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.5*"/>
+            <RowDefinition Height="0.6*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Результаты предыдущих гонок" FontSize="27" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Марафон:" Style="{StaticResource DescriptionTextBlock}" Margin="0,0,-90,0"/>
+            <ComboBox Width="200" x:Name="MarathonComboBox">
+
+            </ComboBox>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Пол:" Style="{StaticResource DescriptionTextBlock}" Margin="0,0,-90,0"/>
+            <ComboBox Width="200" x:Name="GenderCombobox">
+
+            </ComboBox>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <TextBlock Text="Категория:" Style="{StaticResource DescriptionTextBlock}" Margin="0,0,-90,0"/>
+            <ComboBox Width="200" x:Name="CategoryComboBox">
+
+            </ComboBox>
+        </StackPanel>
+
+        <Border Grid.Row="2" Grid.Column="1" Width="100" Style="{StaticResource SmallButtonBorder}" x:Name="DataGridSearchButton" MouseLeftButtonDown="DataGridSearchButton_MouseLeftButtonDown">
+            <TextBlock Text="Поиск" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Border>
+
+        <Grid Grid.Row="3" Grid.ColumnSpan="2">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="0.5*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="0.5*"/>
+            </Grid.ColumnDefinitions>
+            <Label x:Name="TotalRunnersLabel" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+            <Label x:Name="FinishingRunnersLabel" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+            <Label x:Name="AverageTimeLabel" Grid.Column="2" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold"/>
+        </Grid>
+
+        <DataGrid Grid.Row="4" Grid.ColumnSpan="2" Grid.RowSpan="2" Margin="30,0,30,0" x:Name="RunnersDataGrid" AutoGenerateColumns="False" ColumnWidth="*">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Место" 
+                                    Binding="{Binding Position}"/>
+                <DataGridTextColumn Header="Время" 
+                                    Binding="{Binding Time}"/>
+                <DataGridTextColumn Header="Имя бегуна" 
+                                    Binding="{Binding Runner.User.FirstName}"/>
+                <DataGridTextColumn Header="Страна" 
+                                    Binding="{Binding Runner.Country.CountryName}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Page>

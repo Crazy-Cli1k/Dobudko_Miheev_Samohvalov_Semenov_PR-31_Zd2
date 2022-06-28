@@ -72,8 +72,13 @@
                 </Border>
             </StackPanel>
             <TextBlock x:Name="TimerTextBox" Visibility="Hidden" HorizontalAlignment="Center"/>
-            <Button x:Name="DebugButton" Content="Перейти как участник" Click="DebugButton_Click"/>
+            
         </StackPanel>
-        
+        <StackPanel HorizontalAlignment="Right" VerticalAlignment="Bottom">
+        <Button x:Name="DebugRunnerButton" Content="Перейти как участник" Click="DebugRunnerButton_Click"/>
+        <Button x:Name="DebugCoordinatorButton" Content="Перейти как Координатор" Click="DebugCoordinatorButton_Click"/>
+        <Button x:Name="DebugViewerButton" Content="Перейти как зритель" Click="DebugViewerButton_Click"/>
+        <Button x:Name="DebugAdminButton" Content="Перейти как администратор" Click="DebugAdminButton_Click"/>
+        </StackPanel>
     </Grid>
 </Page>

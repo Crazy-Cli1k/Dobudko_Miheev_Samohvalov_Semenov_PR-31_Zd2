@@ -18,6 +18,8 @@ namespace MaraphonSkills.Core
         public Runner()
         {
             this.Registration = new HashSet<Registration>();
+            this.Sponsor = new HashSet<Sponsor>();
+            this.RunnerMarathon = new HashSet<RunnerMarathon>();
         }
     
         public int RunnerId { get; set; }
@@ -32,5 +34,9 @@ namespace MaraphonSkills.Core
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Registration> Registration { get; set; }
         public virtual User User { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sponsor> Sponsor { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<RunnerMarathon> RunnerMarathon { get; set; }
     }
 }

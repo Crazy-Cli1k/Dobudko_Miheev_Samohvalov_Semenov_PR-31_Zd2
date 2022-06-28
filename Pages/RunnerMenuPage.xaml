@@ -11,21 +11,36 @@
     <Grid>
         <Label Content="Меню бегуна"/>
         <UniformGrid HorizontalAlignment="Center" VerticalAlignment="Center" Columns="2">
-            <Border Style="{StaticResource BigButtonBorder}">
+            <Border Style="{StaticResource BigButtonBorder}" MouseLeftButtonDown="Border_MouseLeftButtonDown_1">
                 <TextBlock Text="Регистрация на марафон" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
-            <Border Style="{StaticResource BigButtonBorder}">
+            <Border Style="{StaticResource BigButtonBorder}" MouseLeftButtonDown="Border_MouseLeftButtonDown">
                 <TextBlock Text="Мои результаты" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
             <Border Style="{StaticResource BigButtonBorder}" x:Name="ProfileEditButton" MouseLeftButtonDown="ProfileEditButton_MouseLeftButtonDown">
                 <TextBlock Text="Редактирование профиля" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
-            <Border Style="{StaticResource BigButtonBorder}">
+            <Border Style="{StaticResource BigButtonBorder}" x:Name="MySponsorButton" MouseLeftButtonDown="MySponsorButton_MouseLeftButtonDown">
                 <TextBlock Text="Мой спонсор" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
             <Border Style="{StaticResource BigButtonBorder}" x:Name="ContactsButton" MouseLeftButtonDown="ContactsButton_MouseLeftButtonDown">
                 <TextBlock Text="Контакты" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
         </UniformGrid>
+        <Border  Height="300" Width="500" Background="White" HorizontalAlignment="Center" VerticalAlignment="Center" BorderBrush="Black" BorderThickness="2" x:Name="ContactsBorder">
+            <StackPanel>
+                <Image Source="../Resources/cross.png" Width="20" HorizontalAlignment="Right" VerticalAlignment="Top" x:Name="Cross" MouseLeftButtonDown="Cross_MouseLeftButtonDown"/>
+                <Label Content="Контакты" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+                <TextBlock Text="Для получения дополнительной информации пожалуйста свяжитесь с координаторами" TextWrapping="Wrap" Margin="10"/>
+                <WrapPanel Margin="10">
+                    <TextBlock Text="Телефон:" FontWeight="Bold" Width="60"/>
+                    <TextBlock Text="+55 11 9988 7766"/>
+                </WrapPanel>
+                <WrapPanel Margin="10">
+                    <TextBlock Text="Email:" FontWeight="Bold" Width="60"/>
+                    <TextBlock Text="coordinators@marathonskills.org"/>
+                </WrapPanel>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

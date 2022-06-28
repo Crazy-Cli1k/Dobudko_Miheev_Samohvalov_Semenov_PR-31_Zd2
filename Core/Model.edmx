@@ -95,6 +95,17 @@
           <Property Name="RegistrationStatusId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="RegistrationStatus" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="VolunteerId" Type="int" />
+          <Property Name="MarathonId" Type="int" />
+          <Property Name="ReviewMark" Type="int" Nullable="false" />
+          <Property Name="ReviewDescription" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ReviewDateTime" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Role">
           <Key>
             <PropertyRef Name="RoleId" />
@@ -112,6 +123,32 @@
           <Property Name="DateOfBirth" Type="date" Nullable="false" />
           <Property Name="CountryCode" Type="nchar" MaxLength="10" Nullable="false" />
           <Property Name="Img" Type="image" />
+        </EntityType>
+        <!--Ошибки, обнаруженные при создании:
+предупреждение 6002: В таблице или представлении "user3.dbo.RunnerMarathon" не определен первичный ключ. Ключ был выведен, а определение таблицы или представления было создано в режиме только для чтения.-->
+        <EntityType Name="RunnerMarathon">
+          <Key>
+            <PropertyRef Name="RunnerId" />
+            <PropertyRef Name="MarathonId" />
+          </Key>
+          <Property Name="RunnerId" Type="int" Nullable="false" />
+          <Property Name="MarathonId" Type="int" Nullable="false" />
+          <Property Name="Position" Type="int" />
+          <Property Name="Time" Type="time" Precision="7" />
+        </EntityType>
+        <EntityType Name="Sponsor">
+          <Key>
+            <PropertyRef Name="SponsorId" />
+          </Key>
+          <Property Name="SponsorId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="CharityId" Type="int" Nullable="false" />
+          <Property Name="RunnerId" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CardName" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="CardMonth" Type="int" Nullable="false" />
+          <Property Name="CardYear" Type="int" Nullable="false" />
+          <Property Name="CVCCode" Type="int" Nullable="false" />
+          <Property Name="Amount" Type="money" Nullable="false" />
         </EntityType>
         <EntityType Name="Sponsorship">
           <Key>
@@ -300,6 +337,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Review_user3">
+          <End Role="user3" Type="Self.user3" Multiplicity="0..1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user3">
+              <PropertyRef Name="MarathonId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="MarathonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Volunteer">
+          <End Role="Volunteer" Type="Self.Volunteer" Multiplicity="0..1" />
+          <End Role="Review" Type="Self.Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Volunteer">
+              <PropertyRef Name="VolunteerId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="VolunteerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Runner_Country">
           <End Role="Country" Type="Self.Country" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -339,6 +400,60 @@
             </Principal>
             <Dependent Role="Runner">
               <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RunnerMarathon_Runner">
+          <End Role="Runner" Type="Self.Runner" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="RunnerMarathon" Type="Self.RunnerMarathon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Runner">
+              <PropertyRef Name="RunnerId" />
+            </Principal>
+            <Dependent Role="RunnerMarathon">
+              <PropertyRef Name="RunnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RunnerMarathon_user3">
+          <End Role="user3" Type="Self.user3" Multiplicity="1" />
+          <End Role="RunnerMarathon" Type="Self.RunnerMarathon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user3">
+              <PropertyRef Name="MarathonId" />
+            </Principal>
+            <Dependent Role="RunnerMarathon">
+              <PropertyRef Name="MarathonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sponsor_Charity">
+          <End Role="Charity" Type="Self.Charity" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Sponsor" Type="Self.Sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Charity">
+              <PropertyRef Name="CharityId" />
+            </Principal>
+            <Dependent Role="Sponsor">
+              <PropertyRef Name="CharityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sponsor_Runner">
+          <End Role="Runner" Type="Self.Runner" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Sponsor" Type="Self.Sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Runner">
+              <PropertyRef Name="RunnerId" />
+            </Principal>
+            <Dependent Role="Sponsor">
+              <PropertyRef Name="RunnerId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -465,14 +580,24 @@
           <EntitySet Name="Registration" EntityType="Self.Registration" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RegistrationEvent" EntityType="Self.RegistrationEvent" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="RegistrationStatus" EntityType="Self.RegistrationStatus" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Review" EntityType="Self.Review" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Role" EntityType="Self.Role" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Runner" EntityType="Self.Runner" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sponsor" EntityType="Self.Sponsor" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Sponsorship" EntityType="Self.Sponsorship" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Staff" EntityType="Self.Staff" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Timesheet" EntityType="Self.Timesheet" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="User" EntityType="Self.User" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="user3" EntityType="Self.user3" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Volunteer" EntityType="Self.Volunteer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RunnerMarathon" EntityType="Self.RunnerMarathon" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [RunnerMarathon].[RunnerId] AS [RunnerId], 
+    [RunnerMarathon].[MarathonId] AS [MarathonId], 
+    [RunnerMarathon].[Position] AS [Position], 
+    [RunnerMarathon].[Time] AS [Time]
+    FROM [dbo].[RunnerMarathon] AS [RunnerMarathon]</DefiningQuery>
+          </EntitySet>
           <AssociationSet Name="FK_Event_EventType" Association="Self.FK_Event_EventType">
             <End Role="EventType" EntitySet="EventType" />
             <End Role="Event" EntitySet="Event" />
@@ -509,6 +634,14 @@
             <End Role="Registration" EntitySet="Registration" />
             <End Role="RegistrationEvent" EntitySet="RegistrationEvent" />
           </AssociationSet>
+          <AssociationSet Name="FK_Review_user3" Association="Self.FK_Review_user3">
+            <End Role="user3" EntitySet="user3" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Volunteer" Association="Self.FK_Review_Volunteer">
+            <End Role="Volunteer" EntitySet="Volunteer" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
           <AssociationSet Name="FK_Runner_Country" Association="Self.FK_Runner_Country">
             <End Role="Country" EntitySet="Country" />
             <End Role="Runner" EntitySet="Runner" />
@@ -520,6 +653,22 @@
           <AssociationSet Name="FK_Runner_User" Association="Self.FK_Runner_User">
             <End Role="User" EntitySet="User" />
             <End Role="Runner" EntitySet="Runner" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RunnerMarathon_Runner" Association="Self.FK_RunnerMarathon_Runner">
+            <End Role="Runner" EntitySet="Runner" />
+            <End Role="RunnerMarathon" EntitySet="RunnerMarathon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RunnerMarathon_user3" Association="Self.FK_RunnerMarathon_user3">
+            <End Role="user3" EntitySet="user3" />
+            <End Role="RunnerMarathon" EntitySet="RunnerMarathon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sponsor_Charity" Association="Self.FK_Sponsor_Charity">
+            <End Role="Charity" EntitySet="Charity" />
+            <End Role="Sponsor" EntitySet="Sponsor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sponsor_Runner" Association="Self.FK_Sponsor_Runner">
+            <End Role="Runner" EntitySet="Runner" />
+            <End Role="Sponsor" EntitySet="Sponsor" />
           </AssociationSet>
           <AssociationSet Name="FK_Sponsorship_Registration" Association="Self.FK_Sponsorship_Registration">
             <End Role="Registration" EntitySet="Registration" />
@@ -567,6 +716,7 @@
           <Property Name="CharityDescription" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CharitiLogo" Type="Binary" MaxLength="Max" FixedLength="false" />
           <NavigationProperty Name="Registration" Relationship="Self.FK_Registration_Charity" FromRole="Charity" ToRole="Registration" />
+          <NavigationProperty Name="Sponsor" Relationship="MarathonModel.FK_Sponsor_Charity" FromRole="Charity" ToRole="Sponsor" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -691,6 +841,8 @@
           <NavigationProperty Name="Gender1" Relationship="Self.FK_Runner_Gender" FromRole="Runner" ToRole="Gender" />
           <NavigationProperty Name="Registration" Relationship="Self.FK_Registration_Runner" FromRole="Runner" ToRole="Registration" />
           <NavigationProperty Name="User" Relationship="Self.FK_Runner_User" FromRole="Runner" ToRole="User" />
+          <NavigationProperty Name="Sponsor" Relationship="MarathonModel.FK_Sponsor_Runner" FromRole="Runner" ToRole="Sponsor" />
+          <NavigationProperty Name="RunnerMarathon" Relationship="MarathonModel.FK_RunnerMarathon_Runner" FromRole="Runner" ToRole="RunnerMarathon" />
         </EntityType>
         <EntityType Name="Sponsorship">
           <Key>
@@ -754,6 +906,8 @@
           <Property Name="YearHeld" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Country" Relationship="Self.FK_Marathon_Country" FromRole="user3" ToRole="Country" />
           <NavigationProperty Name="Event" Relationship="Self.FK_Event_Marathon" FromRole="user3" ToRole="Event" />
+          <NavigationProperty Name="Review" Relationship="MarathonModel.FK_Review_user3" FromRole="user3" ToRole="Review" />
+          <NavigationProperty Name="RunnerMarathon" Relationship="MarathonModel.FK_RunnerMarathon_user3" FromRole="user3" ToRole="RunnerMarathon" />
         </EntityType>
         <EntityType Name="Volunteer">
           <Key>
@@ -768,6 +922,7 @@
           <NavigationProperty Name="Gender1" Relationship="Self.FK_Volunteer_Gender" FromRole="Volunteer" ToRole="Gender" />
           <Property Name="Email" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="User" Relationship="MarathonModel.FK_Volunteer_User" FromRole="Volunteer" ToRole="User" />
+          <NavigationProperty Name="Review" Relationship="MarathonModel.FK_Review_Volunteer" FromRole="Volunteer" ToRole="Review" />
         </EntityType>
         <Association Name="FK_Registration_Charity">
           <End Role="Charity" Type="Self.Charity" Multiplicity="1">
@@ -1132,6 +1287,33 @@
             <End Role="User" EntitySet="User" />
             <End Role="Volunteer" EntitySet="Volunteer" />
           </AssociationSet>
+          <EntitySet Name="Review" EntityType="MarathonModel.Review" />
+          <AssociationSet Name="FK_Review_user3" Association="MarathonModel.FK_Review_user3">
+            <End Role="user3" EntitySet="user3" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Review_Volunteer" Association="MarathonModel.FK_Review_Volunteer">
+            <End Role="Volunteer" EntitySet="Volunteer" />
+            <End Role="Review" EntitySet="Review" />
+          </AssociationSet>
+          <EntitySet Name="Sponsor" EntityType="MarathonModel.Sponsor" />
+          <AssociationSet Name="FK_Sponsor_Charity" Association="MarathonModel.FK_Sponsor_Charity">
+            <End Role="Charity" EntitySet="Charity" />
+            <End Role="Sponsor" EntitySet="Sponsor" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sponsor_Runner" Association="MarathonModel.FK_Sponsor_Runner">
+            <End Role="Runner" EntitySet="Runner" />
+            <End Role="Sponsor" EntitySet="Sponsor" />
+          </AssociationSet>
+          <EntitySet Name="RunnerMarathon" EntityType="MarathonModel.RunnerMarathon" />
+          <AssociationSet Name="FK_RunnerMarathon_Runner" Association="MarathonModel.FK_RunnerMarathon_Runner">
+            <End Role="Runner" EntitySet="Runner" />
+            <End Role="RunnerMarathon" EntitySet="RunnerMarathon" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RunnerMarathon_user3" Association="MarathonModel.FK_RunnerMarathon_user3">
+            <End Role="user3" EntitySet="user3" />
+            <End Role="RunnerMarathon" EntitySet="RunnerMarathon" />
+          </AssociationSet>
         </EntityContainer>
         <Association Name="FK_Volunteer_User">
           <End Type="MarathonModel.User" Role="User" Multiplicity="1">
@@ -1144,6 +1326,125 @@
             </Principal>
             <Dependent Role="Volunteer">
               <PropertyRef Name="Email" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Review">
+          <Key>
+            <PropertyRef Name="ReviewId" />
+          </Key>
+          <Property Name="ReviewId" Type="Int32" Nullable="false" />
+          <Property Name="VolunteerId" Type="Int32" />
+          <Property Name="MarathonId" Type="Int32" />
+          <Property Name="ReviewMark" Type="Int32" Nullable="false" />
+          <Property Name="ReviewDescription" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="user3" Relationship="MarathonModel.FK_Review_user3" FromRole="Review" ToRole="user3" />
+          <NavigationProperty Name="Volunteer" Relationship="MarathonModel.FK_Review_Volunteer" FromRole="Review" ToRole="Volunteer" />
+          <Property Name="ReviewDateTime" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        <Association Name="FK_Review_user3">
+          <End Type="MarathonModel.user3" Role="user3" Multiplicity="0..1" />
+          <End Type="MarathonModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user3">
+              <PropertyRef Name="MarathonId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="MarathonId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Review_Volunteer">
+          <End Type="MarathonModel.Volunteer" Role="Volunteer" Multiplicity="0..1" />
+          <End Type="MarathonModel.Review" Role="Review" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Volunteer">
+              <PropertyRef Name="VolunteerId" />
+            </Principal>
+            <Dependent Role="Review">
+              <PropertyRef Name="VolunteerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Sponsor">
+          <Key>
+            <PropertyRef Name="SponsorId" />
+          </Key>
+          <Property Name="SponsorId" Type="Int32" Nullable="false" />
+          <Property Name="CharityId" Type="Int32" Nullable="false" />
+          <Property Name="RunnerId" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CardName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CardMonth" Type="Int32" Nullable="false" />
+          <Property Name="CardYear" Type="Int32" Nullable="false" />
+          <Property Name="CVCCode" Type="Int32" Nullable="false" />
+          <Property Name="Amount" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="Charity" Relationship="MarathonModel.FK_Sponsor_Charity" FromRole="Sponsor" ToRole="Charity" />
+          <NavigationProperty Name="Runner" Relationship="MarathonModel.FK_Sponsor_Runner" FromRole="Sponsor" ToRole="Runner" />
+        </EntityType>
+        <Association Name="FK_Sponsor_Charity">
+          <End Type="MarathonModel.Charity" Role="Charity" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MarathonModel.Sponsor" Role="Sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Charity">
+              <PropertyRef Name="CharityId" />
+            </Principal>
+            <Dependent Role="Sponsor">
+              <PropertyRef Name="CharityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sponsor_Runner">
+          <End Type="MarathonModel.Runner" Role="Runner" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MarathonModel.Sponsor" Role="Sponsor" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Runner">
+              <PropertyRef Name="RunnerId" />
+            </Principal>
+            <Dependent Role="Sponsor">
+              <PropertyRef Name="RunnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="RunnerMarathon">
+          <Key>
+            <PropertyRef Name="RunnerId" />
+            <PropertyRef Name="MarathonId" />
+          </Key>
+          <Property Name="RunnerId" Type="Int32" Nullable="false" />
+          <Property Name="MarathonId" Type="Int32" Nullable="false" />
+          <Property Name="Position" Type="Int32" />
+          <Property Name="Time" Type="Time" Precision="7" />
+          <NavigationProperty Name="Runner" Relationship="MarathonModel.FK_RunnerMarathon_Runner" FromRole="RunnerMarathon" ToRole="Runner" />
+          <NavigationProperty Name="user3" Relationship="MarathonModel.FK_RunnerMarathon_user3" FromRole="RunnerMarathon" ToRole="user3" />
+        </EntityType>
+        <Association Name="FK_RunnerMarathon_Runner">
+          <End Type="MarathonModel.Runner" Role="Runner" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="MarathonModel.RunnerMarathon" Role="RunnerMarathon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Runner">
+              <PropertyRef Name="RunnerId" />
+            </Principal>
+            <Dependent Role="RunnerMarathon">
+              <PropertyRef Name="RunnerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RunnerMarathon_user3">
+          <End Type="MarathonModel.user3" Role="user3" Multiplicity="1" />
+          <End Type="MarathonModel.RunnerMarathon" Role="RunnerMarathon" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="user3">
+              <PropertyRef Name="MarathonId" />
+            </Principal>
+            <Dependent Role="RunnerMarathon">
+              <PropertyRef Name="MarathonId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -1339,6 +1640,43 @@
                 <ScalarProperty Name="LastName" ColumnName="LastName" />
                 <ScalarProperty Name="CountryCode" ColumnName="CountryCode" />
                 <ScalarProperty Name="Gender" ColumnName="Gender" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Review">
+            <EntityTypeMapping TypeName="MarathonModel.Review">
+              <MappingFragment StoreEntitySet="Review">
+                <ScalarProperty Name="ReviewDateTime" ColumnName="ReviewDateTime" />
+                <ScalarProperty Name="ReviewDescription" ColumnName="ReviewDescription" />
+                <ScalarProperty Name="ReviewMark" ColumnName="ReviewMark" />
+                <ScalarProperty Name="MarathonId" ColumnName="MarathonId" />
+                <ScalarProperty Name="VolunteerId" ColumnName="VolunteerId" />
+                <ScalarProperty Name="ReviewId" ColumnName="ReviewId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Sponsor">
+            <EntityTypeMapping TypeName="MarathonModel.Sponsor">
+              <MappingFragment StoreEntitySet="Sponsor">
+                <ScalarProperty Name="Amount" ColumnName="Amount" />
+                <ScalarProperty Name="CVCCode" ColumnName="CVCCode" />
+                <ScalarProperty Name="CardYear" ColumnName="CardYear" />
+                <ScalarProperty Name="CardMonth" ColumnName="CardMonth" />
+                <ScalarProperty Name="CardName" ColumnName="CardName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="RunnerId" ColumnName="RunnerId" />
+                <ScalarProperty Name="CharityId" ColumnName="CharityId" />
+                <ScalarProperty Name="SponsorId" ColumnName="SponsorId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="RunnerMarathon">
+            <EntityTypeMapping TypeName="MarathonModel.RunnerMarathon">
+              <MappingFragment StoreEntitySet="RunnerMarathon">
+                <ScalarProperty Name="Time" ColumnName="Time" />
+                <ScalarProperty Name="Position" ColumnName="Position" />
+                <ScalarProperty Name="MarathonId" ColumnName="MarathonId" />
+                <ScalarProperty Name="RunnerId" ColumnName="RunnerId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

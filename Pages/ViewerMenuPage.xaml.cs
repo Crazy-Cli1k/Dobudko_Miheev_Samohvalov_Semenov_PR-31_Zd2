@@ -30,37 +30,63 @@ namespace MaraphonSkills.Pages
             InitializeComponent();
 
             picturePageNumber = 1;
-            maxPicturePageNumber = context.Runner.ToList().Count/2;
-            PictureListView.ItemsSource = context.Runner.OrderBy(x=>x.RunnerId).Take(2).ToList();
+            maxPicturePageNumber = context.Runner.ToList().Count/4;
+
+            if(context.Runner.ToList().Count % 4 > 0)
+            {
+                maxPicturePageNumber++;
+            }
+
+            PictureListView.ItemsSource = context.Runner.OrderBy(x=>x.RunnerId).Take(4).ToList();
 
             PageCountTextBlock.Text = String.Format("{0} из {1}", picturePageNumber, maxPicturePageNumber);
         }
 
-        public string PageCount { get
-            {
-                return String.Format("{0} из {1}", picturePageNumber, maxPicturePageNumber);
-            }
-        }
 
+        /// <summary>
+        /// Кнопка перехода на страницу назад в просмотре изображений бегунов
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PageDownButton_Click(object sender, RoutedEventArgs e)
         {
             if (picturePageNumber > 1)
             {
                 picturePageNumber -= 1;
-                PictureListView.ItemsSource = context.Runner.OrderBy(x => x.RunnerId).Skip((picturePageNumber-1)*2).Take(2).ToList();
+                PictureListView.ItemsSource = context.Runner.OrderBy(x => x.RunnerId).Skip((picturePageNumber-1)*4).Take(4).ToList();
                 
                 PageCountTextBlock.Text = String.Format("{0} из {1}", picturePageNumber, maxPicturePageNumber);
             }
         }
 
+        /// <summary>
+        /// Кнопка перехода на следующую страницу в просмотре изображений бегунов 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void PageUpButton_Click(object sender, RoutedEventArgs e)
         {
             if (picturePageNumber < maxPicturePageNumber)
             {
                 picturePageNumber += 1;
-                PictureListView.ItemsSource = context.Runner.OrderBy(x => x.RunnerId).Skip((picturePageNumber-1)*2).Take(2).ToList();
+                PictureListView.ItemsSource = context.Runner.OrderBy(x => x.RunnerId).Skip((picturePageNumber-1)*4).Take(4).ToList();
                 PageCountTextBlock.Text = String.Format("{0} из {1}", picturePageNumber, maxPicturePageNumber);
             }
+        }
+
+        /// <summary>
+        /// Кнопка Оставить отзыв
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void AddCommentButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.NavigationService.Navigate(new AddReviewPage());
+        }
+
+        private void CommentStatButton_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            this.NavigationService.Navigate(new ReviewsPage());
         }
     }
 }

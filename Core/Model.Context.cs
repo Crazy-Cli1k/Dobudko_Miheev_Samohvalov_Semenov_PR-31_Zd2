@@ -43,5 +43,8 @@ namespace MaraphonSkills.Core
         public virtual DbSet<User> User { get; set; }
         public virtual DbSet<user3> user3 { get; set; }
         public virtual DbSet<Volunteer> Volunteer { get; set; }
+        public virtual DbSet<Review> Review { get; set; }
+        public virtual DbSet<Sponsor> Sponsor { get; set; }
+        public virtual DbSet<RunnerMarathon> RunnerMarathon { get; set; }
     }
 }

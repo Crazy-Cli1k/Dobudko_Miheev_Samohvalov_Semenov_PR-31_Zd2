@@ -18,6 +18,7 @@ namespace MaraphonSkills.Core
         public Charity()
         {
             this.Registration = new HashSet<Registration>();
+            this.Sponsor = new HashSet<Sponsor>();
         }
     
         public int CharityId { get; set; }
@@ -27,5 +28,7 @@ namespace MaraphonSkills.Core
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Registration> Registration { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Sponsor> Sponsor { get; set; }
     }
 }

@@ -24,11 +24,10 @@ namespace MaraphonSkills
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         public DateTime startTime ;
-
         public MainWindow()
         {
             InitializeComponent();
-            startTime = DateTime.Parse("2021-11-21 12:00");
+            startTime = DateTime.Parse("2022-11-21 12:00");
 
             this.DataContext = this;
 
@@ -44,8 +43,10 @@ namespace MaraphonSkills
         /// </summary>
         public void TimerDate()
         {
-            Timer tmr = new Timer();
-            tmr.Interval = 1000;
+            Timer tmr = new Timer
+            {
+                Interval = 1000
+            };
             tmr.Elapsed += Tmr_Elapsed;
 
             tmr.Start();
